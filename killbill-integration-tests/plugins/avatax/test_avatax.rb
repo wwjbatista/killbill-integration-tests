@@ -107,7 +107,7 @@ module KillBillIntegrationTests
       kb_clock_add_days(1, nil, @options)
 
       # Change immediately
-      bp = bp.change_plan({:productName => 'Super', :billingPeriod => 'MONTHLY', :priceList => 'DEFAULT'}, @user, nil, nil, nil, 'IMMEDIATE', false, @options)
+      bp = bp.change_plan({:productName => 'Super', :billingPeriod => 'MONTHLY', :priceList => 'DEFAULT'}, @user, nil, nil, nil, 'IMMEDIATE', nil, false, @options)
       check_entitlement(bp, 'Super', 'BASE', 'MONTHLY', 'DEFAULT', '2017-08-01', nil)
 
       # Verify the second and third invoices, latest invoice amount is -$466.67 - $4.67 - $30.33 + $9.03 + $58.71 + $903.23 = $469.30
@@ -312,7 +312,7 @@ module KillBillIntegrationTests
       assert_equal(my_first_charge.first.invoice_item_id, ca_state_taxes.first.linked_invoice_item_id)
 
       # Pay the invoice
-      pay_all_unpaid_invoices(@account.account_id, true, invoice.balance, @user, @options)
+      pay_all_unpaid_invoices(@account.account_id, false, invoice.balance, @user, @options)
       @account = get_account(@account.account_id, true, true, @options)
       assert_equal(0, @account.account_balance)
       assert_equal(0, @account.account_cba)
